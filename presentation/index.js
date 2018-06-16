@@ -15,7 +15,6 @@ import {
   ListItem,
   Notes,
   Quote,
-  S,
   Slide,
   Text,
 } from "spectacle"
@@ -32,13 +31,23 @@ const images = {
   diagram: require("../assets/images/clean-architecture.jpg"),
 }
 preloader(images)
+const code = {
+  entities: require("raw-loader!../assets/code/entities.go"),
+  services: require("raw-loader!../assets/code/services.go"),
+  storage: require("raw-loader!../assets/code/storage.go"),
+  serviceImplementation: require("raw-loader!../assets/code/implementation.go"),
+  tests: require("raw-loader!../assets/code/tests.go"),
+}
+preloader(code)
 
-const theme = createTheme({
+const colors = {
   primary: "#FAFAFA",
   secondary: "#1F2022",
   tertiary: "#FFBF00", // "#03A9FC",
   quarternary: "#CECECE",
-}, {
+}
+
+const theme = createTheme(colors, {
   primary: "Montserrat",
   secondary: "Helvetica",
 })
@@ -185,6 +194,7 @@ export default class Presentation extends React.Component {
         <Slide transition={["fade"]} bgColor="secondary" textColor="primary">
           <Notes>
             <p>To show the code I built an example service</p>
+            <p>Here is the list of use cases</p>
           </Notes>
           <Heading size={3} textColor="primary">
             Image resizing
@@ -195,6 +205,123 @@ export default class Presentation extends React.Component {
             <Text textColor="primary" padding="0 0 20px 0">Get the resized image</Text>
           </BlockQuote>
         </Slide>
+
+        <CodeSlide
+          bgColor="secondary"
+          color={colors.primary}
+          transition={["fade"]}
+          lang="go"
+          code={code.entities}
+          ranges={[
+            { loc: [2, 6], note: "Image representation" },
+            { loc: [7, 13], note: "Resize Job" },
+            { loc: [14, 19], note: "Result of resize" },
+          ]}
+        />
+
+        <CodeSlide
+          bgColor="secondary"
+          color={colors.primary}
+          transition={["fade"]}
+          lang="go"
+          code={code.services}
+          notes={
+            `Framework agnostic business logic
+            Not the db schema not the framework.
+            Not even main package
+            `
+          }
+          ranges={[
+            { loc: [6, 7], note: "Encapsulates uploading and getting use-cases" },
+            { loc: [7, 12], note: "Recieves bytes and sizes. Returns ResizeJob entity and error" },
+            { loc: [13, 17], note: "Recieves ID and returns Image entity" },
+
+            { loc: [24, 25], note: "Encapsulates resize related logic" },
+            { loc: [25, 29], note: "Responsible for image format encoding, resize algorith and so on" },
+
+            { loc: [32, 35], note: "Supplimentary interface for Image ID generation" },
+
+            { loc: [4, 5], note: "Generate mocks for all defined interfaces" },
+          ]}
+        />
+
+        <CodeSlide
+          bgColor="secondary"
+          color={colors.primary}
+          transition={["fade"]}
+          lang="go"
+          code={code.storage}
+          notes={
+            `At this point, I need a storage.
+            I'll show the dependency isolation principle of Clean Architecture
+            I defined a storage with meaningfull methods for my business logic.
+            With no idea of implementation details`
+          }
+          ranges={[
+            { loc: [10, 11], note: "Define a storage interface" },
+            { loc: [11, 15], note: "Saves Image entity to a storage" },
+            { loc: [21, 25], note: "Saves resize job parameters" },
+
+            { loc: [2, 3], note: "Generates mocks for storage interface" },
+          ]}
+        />
+
+        <CodeSlide
+          bgColor="secondary"
+          color={colors.primary}
+          transition={["fade"]}
+          lang="go"
+          code={code.serviceImplementation}
+          notes={
+            `I have all the interfaces and isolated dependencies.
+            At this point, I can start implementation of Use-Cases
+            Dependency injection example.
+
+            I model the domain with struct and interfaces of programmign language
+            `
+          }
+          ranges={[
+            { loc: [2, 7], note: "Define a struct with all the dependencies" },
+            { loc: [8, 15], note: "Define constructor function for convenience" },
+
+            { loc: [16, 17], note: "Implementing upload use-case" },
+            { loc: [21, 25], note: "Create the Image entity instance" },
+            { loc: [25, 29], note: "Save it to storage" },
+            { loc: [29, 34], note: "Create the ResizeJob" },
+            { loc: [34, 41], note: "Save to a storage. Get an ID from it" },
+            { loc: [42, 44], note: "Run resize process and return the job entity" },
+          ]}
+        />
+
+        <CodeSlide
+          bgColor="secondary"
+          color={colors.primary}
+          transition={["fade"]}
+          lang="go"
+          code={code.tests}
+          notes={`
+            I can write a test for that.
+
+            Test as design experiment.
+            It tests that my design works as expected.
+            It's a huge benefit as compare with diagrams and whitebord drawings
+
+            Design process has meaningful and measurable output
+          `}
+          ranges={[
+            { loc: [5, 10], note: "Initialize the mocks for dependencies" },
+            { loc: [11, 16], note: "Initialize with mocked dependencies" },
+            { loc: [17, 29], note: "Set up expected values" },
+            { loc: [31, 43], note: "Set up mocks expectations" },
+            { loc: [33, 36], note: "Storage call for new image" },
+            { loc: [36, 39], note: "Storage call for resize job" },
+            { loc: [39, 42], note: "ResizeService for job processing" },
+
+            { loc: [43, 46], note: "Run the use case" },
+            { loc: [46, 48], note: "Assert the result" },
+
+          ]}
+        />
 
       </Deck>
     )
