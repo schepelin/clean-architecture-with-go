@@ -32,7 +32,7 @@ func (is *ImageService) UploadForResize(
 		Width: width,
 		Height: height,
 	}
-    job.ID, err := is.Storage.CreateResizeJob(
+    job.ID, err = is.Storage.CreateResizeJob(
 		ctx,
 		job,
 	)

@@ -37,6 +37,9 @@ const code = {
   storage: require("raw-loader!../assets/code/storage.go"),
   serviceImplementation: require("raw-loader!../assets/code/implementation.go"),
   tests: require("raw-loader!../assets/code/tests.go"),
+  endpoints: require("raw-loader!../assets/code/endpoints.go"),
+  transport: require("raw-loader!../assets/code/transport.go"),
+  main: require("raw-loader!../assets/code/main.go"),
 }
 preloader(code)
 
@@ -165,7 +168,7 @@ export default class Presentation extends React.Component {
         <Slide transition={["fade"]} bgColor="secondary" textColor="primary">
           <Notes>
             <p>As the first step of the architecture process we must grasp the domain knowledge</p>
-            <p>The model of bussines domain defines what componenst the system will consist of</p>
+            <p>The model of business domain defines what componenst the system will consist of</p>
             <p>
               For example: flight tiket buying.
               What is for flight company. "Passenger" maybe "seat" maybe "flight ticket"
@@ -255,8 +258,10 @@ export default class Presentation extends React.Component {
             `At this point, I need a storage.
             I'll show the dependency isolation principle of Clean Architecture
             I defined a storage with meaningfull methods for my business logic.
-            With no idea of implementation details`
-          }
+            With no idea of implementation details
+
+            DDD Anti corruption layer
+          `}
           ranges={[
             { loc: [10, 11], note: "Define a storage interface" },
             { loc: [11, 15], note: "Saves Image entity to a storage" },
@@ -322,6 +327,136 @@ export default class Presentation extends React.Component {
 
           ]}
         />
+
+        <Slide transition={["fade"]} bgColor="secondary" textColor="primary">
+          <Notes>
+            <p>At this point, I implemented all the use-cases</p>
+            <p>For transport layer I gonna use go-kit.</p>
+            <p>It's not MVC framework. But, also has layers</p>
+            <p>Transport layer it's encapsulates protocol specific details</p>
+            <p>Endpoint layer it's an abstraction over Service. Represent entrypoint to a use case</p>
+            <p>Service layer. Where the business logic lives</p>
+          </Notes>
+          <Heading size={3} textColor="primary">
+            Expose API
+            <Text textColor="tertiary">Go-kit</Text>
+          </Heading>
+
+          <BlockQuote>
+            <Text textColor="primary" padding="0 0 20px 0">Transport layer</Text>
+            <Text textColor="primary" padding="0 0 20px 0">Endpoint layer</Text>
+            <Text textColor="primary" padding="0 0 20px 0">Service layer</Text>
+          </BlockQuote>
+        </Slide>
+
+        <CodeSlide
+          bgColor="secondary"
+          color={colors.primary}
+          transition={["fade"]}
+          lang="go"
+          code={code.endpoints}
+          notes={`
+            Enpoint it's a function.
+            Responsible for converting request data
+            into service method arguments
+            and service output to the response
+          `}
+          ranges={[
+            { loc: [6, 7], title: "Endpoint layer" },
+            { loc: [9, 14], note: "Request format" },
+            { loc: [15, 19], note: "Response format" },
+            { loc: [23, 27], note: "Endpoint it's a function" },
+
+            { loc: [27, 29], note: "Transform external request into service object arguments" },
+            { loc: [32, 37], note: "Calls service's method" },
+            { loc: [37, 41], note: "Returns response" },
+          ]}
+        />
+
+        <CodeSlide
+          bgColor="secondary"
+          color={colors.primary}
+          transition={["fade"]}
+          lang="go"
+          code={code.transport}
+          notes={`
+            At transport layer I'll use http.
+            Transport wraps endpoint with particular protocol implementation
+
+            Transport can be gRPC, nats, kafka,
+          `}
+          ranges={[
+            { loc: [8, 9], title: "Transport layer" },
+            { loc: [24, 33], note: "Build HTTP handler around endpoint" },
+            { loc: [27, 28], note: "Go-Kit does the dirty job" },
+            { loc: [28, 29], note: "Receives endpoint" },
+            { loc: [29, 30], note: "Request decoding can be customized" },
+            { loc: [15, 22], note: "Custom error for json decoding" },
+            { loc: [30, 31], note: "Go-kit provides encoders/decoders for popular formats" },
+          ]}
+        />
+
+        <CodeSlide
+          bgColor="secondary"
+          color={colors.primary}
+          transition={["fade"]}
+          lang="go"
+          code={code.main}
+          notes={`
+            And the last thing I do it's building the main package
+          `}
+          ranges={[
+            { loc: [0, 1], title: "Build the binary" },
+            { loc: [8, 11], note: "Real implementations of dependencies and services" },
+
+            { loc: [13, 20], note: "Dependency: Image ID generator" },
+
+            { loc: [22, 27], note: "Explicit DB connection" },
+
+          ]}
+        />
+
+        {/*TODO: Add pros and cons slides*/}
+
+        <Slide transition={["fade"]} bgColor="secondary" textColor="primary">
+          <Heading size={3} textColor="primary">
+            Questions?
+          </Heading>
+          <Text textColor="tertiary">
+            m.schepelin@gmail.com
+          </Text>
+        </Slide>
+
+
+        <Slide transition={["fade"]} bgColor="secondary" textColor="primary">
+          <Heading size={3} textColor="primary">
+            Resources
+          </Heading>
+          <BlockQuote>
+            <List>
+              <ListItem>
+                <Link textColor="tertiary" href="https://en.wikipedia.org/wiki/List_of_system_quality_attributes">
+                  List of system quality attributes
+                </Link>
+              </ListItem>
+              <ListItem>
+                <Link textColor="tertiary" href="https://8thlight.com/blog/uncle-bob/2012/08/13/the-clean-architecture.html">
+                  Original article "Clean architecture"
+                </Link>
+              </ListItem>
+              <ListItem>
+                <Link textColor="tertiary" href="http://a.co/68ZcJ15">
+                  Book: Robert C. Martin – "Clean architecture"
+                </Link>
+              </ListItem>
+              <ListItem>
+                <Link textColor="tertiary" href="http://a.co/jg6sKfJ">
+                  Book: Eric Evans – "Domain Driven Design"
+                </Link>
+              </ListItem>
+            </List>
+          </BlockQuote>
+        </Slide>
 
       </Deck>
     )
