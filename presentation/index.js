@@ -58,7 +58,13 @@ const theme = createTheme(colors, {
 export default class Presentation extends React.Component {
   render() {
     return (
-      <Deck transition={["zoom", "slide"]} transitionDuration={500} theme={theme}>
+      <Deck
+        transition={["zoom", "slide"]}
+        transitionDuration={500}
+        theme={theme}
+        contentHeight={900}
+        contentWidth={1200}
+      >
         <Slide transition={["fade"]} bgColor="primary">
           <Heading size={1} fit caps lineHeight={1} textColor="secondary">
             Clean Architecture With Go
@@ -180,9 +186,7 @@ export default class Presentation extends React.Component {
           </Notes>
           <Heading size={3} textColor="primary">
             Domain exploration
-          </Heading>
-          <Heading size={3} textColor="tertiary">
-            Entities, Use-Cases, and Services
+            <Text textColor="tertiary">Entities, Use-Cases, and Services</Text>
           </Heading>
         </Slide>
 
@@ -202,11 +206,11 @@ export default class Presentation extends React.Component {
           <Heading size={3} textColor="primary">
             Image resizing
           </Heading>
-          <BlockQuote>
-            <Text textColor="primary" padding="0 0 20px 0">Upload an image for resize with given width and height</Text>
-            <Text textColor="primary" padding="0 0 20px 0">Get the original image</Text>
-            <Text textColor="primary" padding="0 0 20px 0">Get the resized image</Text>
-          </BlockQuote>
+          <List textAlign="left">
+            <ListItem textColor="primary" padding="0 0 20px 0">Upload an image for resize with given width and height</ListItem>
+            <ListItem textColor="primary" padding="0 0 20px 0">Get the original image</ListItem>
+            <ListItem textColor="primary" padding="0 0 20px 0">Get the resized image</ListItem>
+          </List>
         </Slide>
 
         <CodeSlide
@@ -342,11 +346,11 @@ export default class Presentation extends React.Component {
             <Text textColor="tertiary">Go-kit</Text>
           </Heading>
 
-          <BlockQuote>
-            <Text textColor="primary" padding="0 0 20px 0">Transport layer</Text>
-            <Text textColor="primary" padding="0 0 20px 0">Endpoint layer</Text>
-            <Text textColor="primary" padding="0 0 20px 0">Service layer</Text>
-          </BlockQuote>
+          <List textAlign="left">
+            <ListItem textColor="primary" padding="0 0 20px 0">Transport layer</ListItem>
+            <ListItem textColor="primary" padding="0 0 20px 0">Endpoint layer</ListItem>
+            <ListItem textColor="primary" padding="0 0 20px 0">Service layer</ListItem>
+          </List>
         </Slide>
 
         <CodeSlide
@@ -434,19 +438,17 @@ export default class Presentation extends React.Component {
             Advantages
           </Heading>
 
-          <BlockQuote>
-            <List textColor="primary" ordered>
-              <ListItem padding="0 0 20px 0">
-                Design with a code not supplimentary documentation
-              </ListItem>
-              <ListItem padding="0 0 20px 0">
-                Design and implementation are separated processes
-              </ListItem>
-              <ListItem padding="0 0 20px 0">
-                Testability, Maintainability, Extensibility
-              </ListItem>
-            </List>
-          </BlockQuote>
+          <List textColor="primary" ordered textAlign="left">
+            <ListItem padding="0 0 20px 0">
+              Design with a code not supplimentary documentation
+            </ListItem>
+            <ListItem padding="0 0 20px 0">
+              Design and implementation are separated processes
+            </ListItem>
+            <ListItem padding="0 0 20px 0">
+              Testability, Maintainability, Extensibility
+            </ListItem>
+          </List>
         </Slide>
 
         <Slide transition={["fade"]} bgColor="secondary" textColor="primary">
@@ -457,20 +459,17 @@ export default class Presentation extends React.Component {
           <Heading size={3} textColor="primary">
             Drawbacks
           </Heading>
-
-          <BlockQuote>
-            <List textColor="primary" ordered>
-              <ListItem padding="0 0 20px 0">
-                Not traditional way to build software
-              </ListItem>
-              <ListItem padding="0 0 20px 0">
-                Extra-effort to keep a team in sync
-              </ListItem>
-              <ListItem padding="0 0 20px 0">
-                Boilerplate code
-              </ListItem>
-            </List>
-          </BlockQuote>
+          <List textColor="primary" ordered textAlign="left">
+            <ListItem padding="0 0 20px 0">
+              Not traditional way to build software
+            </ListItem>
+            <ListItem padding="0 0 20px 0">
+              Extra-effort to keep a team in sync
+            </ListItem>
+            <ListItem padding="0 0 20px 0">
+              Boilerplate code
+            </ListItem>
+          </List>
         </Slide>
 
         <Slide transition={["fade"]} bgColor="secondary" textColor="primary">
@@ -487,30 +486,28 @@ export default class Presentation extends React.Component {
           <Heading size={3} textColor="primary">
             Resources
           </Heading>
-          <BlockQuote>
-            <List>
-              <ListItem>
-                <Link textColor="tertiary" href="https://en.wikipedia.org/wiki/List_of_system_quality_attributes">
-                  List of system quality attributes
-                </Link>
-              </ListItem>
-              <ListItem>
-                <Link textColor="tertiary" href="https://8thlight.com/blog/uncle-bob/2012/08/13/the-clean-architecture.html">
-                  Original article "Clean architecture"
-                </Link>
-              </ListItem>
-              <ListItem>
-                <Link textColor="tertiary" href="http://a.co/68ZcJ15">
-                  Book: Robert C. Martin – "Clean architecture"
-                </Link>
-              </ListItem>
-              <ListItem>
-                <Link textColor="tertiary" href="http://a.co/jg6sKfJ">
-                  Book: Eric Evans – "Domain Driven Design"
-                </Link>
-              </ListItem>
-            </List>
-          </BlockQuote>
+          <List>
+            <ListItem>
+              <Link textColor="tertiary" href="https://en.wikipedia.org/wiki/List_of_system_quality_attributes">
+                List of system quality attributes
+              </Link>
+            </ListItem>
+            <ListItem>
+              <Link textColor="tertiary" href="https://8thlight.com/blog/uncle-bob/2012/08/13/the-clean-architecture.html">
+                Original article "Clean architecture"
+              </Link>
+            </ListItem>
+            <ListItem>
+              <Link textColor="tertiary" href="http://a.co/68ZcJ15">
+                Book: Robert C. Martin – "Clean architecture"
+              </Link>
+            </ListItem>
+            <ListItem>
+              <Link textColor="tertiary" href="http://a.co/jg6sKfJ">
+                Book: Eric Evans – "Domain Driven Design"
+              </Link>
+            </ListItem>
+          </List>
         </Slide>
 
       </Deck>
