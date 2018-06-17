@@ -407,16 +407,69 @@ export default class Presentation extends React.Component {
           `}
           ranges={[
             { loc: [0, 1], title: "Build the binary" },
-            { loc: [8, 11], note: "Real implementations of dependencies and services" },
+            { loc: [8, 11], note: "Import implementations of dependencies and services" },
 
             { loc: [13, 20], note: "Dependency: Image ID generator" },
 
-            { loc: [22, 27], note: "Explicit DB connection" },
+            { loc: [22, 27], note: "Connect tothe database" },
+            { loc: [27, 28], note: "Initialize postgress storage dependency" },
+            { loc: [28, 29], note: "Initialize ResizeService dependency" },
+
+            { loc: [29, 34], note: "Initialize ImageService with all dependencies" },
+            { loc: [35, 36], note: "Create handler for upload use-case" },
+
+            { loc: [36, 38], note: "Create a router. Bind handler" },
+
+            { loc: [38, 43], note: "Create and run http server" },
 
           ]}
         />
 
         {/*TODO: Add pros and cons slides*/}
+
+        <Slide transition={["fade"]} bgColor="secondary" textColor="primary">
+          <Notes>
+            <p>Design knowledge lays down in the code not supplimentary documentation</p>
+            <p>Show me your design (outdated photo of whiteboard)</p>
+          </Notes>
+          <Heading size={3} textColor="primary">
+            Advantages
+          </Heading>
+
+          <BlockQuote>
+            <Text textColor="primary" padding="0 0 20px 0">
+              Design embedded into the code. Not supplimentary documentation
+            </Text>
+            <Text textColor="primary" padding="0 0 20px 0">
+              Design and implementation are separated processes
+            </Text>
+            <Text textColor="primary" padding="0 0 20px 0">
+              Ability to adjust quality attributes without changing business logic
+            </Text>
+          </BlockQuote>
+        </Slide>
+
+        <Slide transition={["fade"]} bgColor="secondary" textColor="primary">
+          <Notes>
+            <p>Not traditional way of writing software</p>
+
+          </Notes>
+          <Heading size={3} textColor="primary">
+            Drawbacks
+          </Heading>
+
+          <BlockQuote>
+            <Text textColor="primary" padding="0 0 20px 0">
+              Boilerplate code
+            </Text>
+            <Text textColor="primary" padding="0 0 20px 0">
+              Har to implement in a large team
+            </Text>
+            <Text textColor="primary" padding="0 0 20px 0">
+              Bound to domain knowledge
+            </Text>
+          </BlockQuote>
+        </Slide>
 
         <Slide transition={["fade"]} bgColor="secondary" textColor="primary">
           <Heading size={3} textColor="primary">

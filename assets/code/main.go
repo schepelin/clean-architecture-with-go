@@ -26,7 +26,7 @@ func main() {
 	)
 	defer db.Close()
 	pg := pgstorage.NewPgStorage(db)
-	resizeScv := resizesvc.NewAsyncResize(pg)
+	resizeScv := resizesvc.NewSerivce(pg)
 	imgSvc := imgservice.NewService(
 		pg,
 		resizeScv,
