@@ -418,14 +418,12 @@ export default class Presentation extends React.Component {
             { loc: [29, 34], note: "Initialize ImageService with all dependencies" },
             { loc: [35, 36], note: "Create handler for upload use-case" },
 
-            { loc: [36, 38], note: "Create a router. Bind handler" },
+            { loc: [36, 38], note: "Create a router. Bind the handler" },
 
             { loc: [38, 43], note: "Create and run http server" },
 
           ]}
         />
-
-        {/*TODO: Add pros and cons slides*/}
 
         <Slide transition={["fade"]} bgColor="secondary" textColor="primary">
           <Notes>
@@ -437,15 +435,17 @@ export default class Presentation extends React.Component {
           </Heading>
 
           <BlockQuote>
-            <Text textColor="primary" padding="0 0 20px 0">
-              Design embedded into the code. Not supplimentary documentation
-            </Text>
-            <Text textColor="primary" padding="0 0 20px 0">
-              Design and implementation are separated processes
-            </Text>
-            <Text textColor="primary" padding="0 0 20px 0">
-              Ability to adjust quality attributes without changing business logic
-            </Text>
+            <List textColor="primary" ordered>
+              <ListItem padding="0 0 20px 0">
+                Design with a code not supplimentary documentation
+              </ListItem>
+              <ListItem padding="0 0 20px 0">
+                Design and implementation are separated processes
+              </ListItem>
+              <ListItem padding="0 0 20px 0">
+                Testability, Maintainability, Extensibility
+              </ListItem>
+            </List>
           </BlockQuote>
         </Slide>
 
@@ -459,15 +459,17 @@ export default class Presentation extends React.Component {
           </Heading>
 
           <BlockQuote>
-            <Text textColor="primary" padding="0 0 20px 0">
-              Boilerplate code
-            </Text>
-            <Text textColor="primary" padding="0 0 20px 0">
-              Har to implement in a large team
-            </Text>
-            <Text textColor="primary" padding="0 0 20px 0">
-              Bound to domain knowledge
-            </Text>
+            <List textColor="primary" ordered>
+              <ListItem padding="0 0 20px 0">
+                Not traditional way to build software
+              </ListItem>
+              <ListItem padding="0 0 20px 0">
+                Extra-effort to keep a team in sync
+              </ListItem>
+              <ListItem padding="0 0 20px 0">
+                Boilerplate code
+              </ListItem>
+            </List>
           </BlockQuote>
         </Slide>
 
