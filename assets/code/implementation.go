@@ -1,45 +1,43 @@
-package imgservice
+package uploadsvc
 
-type ImageService struct {
-	Storage storage.ImgStorage
-	Resizer imgresizer.ResizeService
-	Hasher  imgresizer.Hasher
+import (
+	"context"
+
+	"github.com/schepelin/imgupload/pkg/storage"
+	"github.com/schepelin/imgupload/pkg/uploader"
+)
+
+// UploadService contains all the dependecines to perform use cases
+// impelements uploader.UploadService interface
+type UploadService struct {
+	Storage   storage.ImagesStorage
+	Shortener uploader.URLShortener
+	Hasher    uploader.Hasher
 }
 
-func NewService(
-	s storage.ImgStorager,
-	r imgresizer.ResizeService,
-	h imgresizer.Hasher,
-) *ImageService {
-	return &ImageService{Storage: s, Hasher: hl, Resizer: r}
+func (us *UploadService) GetImage(
+	ctx context.Context, imgID string,
+) (*uploader.Image, error) {
+	return us.Storage.GetImage(ctx, imgID)
 }
 
-func (is *ImageService) UploadForResize(
-	ctx context.Context,
-	raw []byte,
-	width, height uint
-) (*ResizeJob, error) {
-    img = imgresizer.Image{
-        ID:        is.Hasher.Gen(raw),
-        RawData:   raw,
-    }
-    err := is.Storage.CreateNewImage(ctx, img)
-    if err != nil {
-        return nil, err
-	}
-	job := imgresizer.ResizeJob{
-		ImageID: img.ID,
-		Width: width,
-		Height: height,
-	}
-    job.ID, err = is.Storage.CreateResizeJob(
-		ctx,
-		job,
-	)
-    if err != nil {
-        return nil, err
-	}
+func (us *UploadService) UploadImage(
+	ctx context.Context, raw []byte,
+) (string, error) {
+	id := us.Hasher.Generate(raw)
 
-    go is.Resizer.RunResizeJob(ctx, job.ID)
-    return job, nil
+	img := uploader.Image{
+		ID:      id,
+		RawData: raw,
+		Link:    us.Shortener.MakeShortURL(id),
+	}
+	err := us.Storage.SaveImage(ctx, img)
+	switch {
+	case err == uploader.ErrImgExists:
+		return img.Link, nil
+	case err != nil:
+		return "", err
+	default:
+		return img.Link, nil
+	}
 }

@@ -1,49 +1,50 @@
-package imgservice_test
+package uploadsvc_test
 
+import (
+	"context"
+	"testing"
 
-func TestImageService_UploadForResize(t *testing.T) {
+	"github.com/golang/mock/gomock"
+	"github.com/schepelin/imgupload/pkg/mocks"
+	"github.com/schepelin/imgupload/pkg/uploader"
+	"github.com/schepelin/imgupload/pkg/uploadsvc"
+	"github.com/stretchr/testify/assert"
+)
 
-    mc := gomock.NewController(t)
-	defer mc.Finish()
-    stMock := mocks.NewMockImgStorage(mc)
-	resMock := mocks.NewMockResizeService(mc)
-    hashMock := mocks.NewMockHasher(mc)
+func TestServiceDesign_UploadImage(t *testing.T) {
+	mockCtrl := gomock.NewController(t)
+	defer mockCtrl.Finish()
+	stMock := mocks.NewMockImagesStorage(mockCtrl)
+	hasherMock := mocks.NewMockHasher(mockCtrl)
+	shortenerMock := mocks.NewMockURLShortener(mockCtrl)
 
-    svc := imgservice.NewService(
-		stMock,
-		resMock,
-		hashMock,
+	ctx := context.TODO()
+	service := &uploadsvc.UploadService{
+		Storage:   stMock,
+		Hasher:    hasherMock,
+		Shortener: shortenerMock,
+	}
+	expectedImg := uploader.Image{
+		ID:      "img-hash",
+		Link:    "http://somewhere",
+		RawData: []byte{10, 42, 15},
+	}
+
+	gomock.InOrder(
+		hasherMock.EXPECT().Generate(
+			expectedImg.RawData,
+		).Return(expectedImg.ID),
+		shortenerMock.EXPECT().MakeShortURL(
+			expectedImg.ID,
+		).Return(expectedImg.Link),
+		stMock.EXPECT().SaveImage(
+			ctx, expectedImg,
+		).Return(uploader.ErrImgExists),
 	)
 
-    expHash := "imghash"
-	stubImgRaw := []byte{10, 20, 03}
-	expJodID := 1
-    expImg := imgresizer.Image{
-		ID:      expHash,
-		RawData: stubImg,
-	}
-    expJob := imgresizer.ResizeJob {
-		ImageID: expHash,
-		width:   100,
-		height:  200,
-	}
-
-    ctx := context.TODO()
-    hashMock.EXPECT().Gen().Return(expHash)
-    gomock.InOrder(
-        storageMock.EXPECT().SaveImage(
-			ctx, expImg,
-		).Return(nil)
-        storageMock.EXPECT().SaveResizeJob(
-			ctx, expJob,
-		).Return(expJodID, nil)
-        resizerMock.EXPECT().RunResizeJob(
-			ctx, expJob.ID,
-		).Return(nil)
-    )
-    actualJob := svc.UploadForResize(
-		ctx, stubImg, width, height,
+	link, err := service.UploadImage(
+		ctx, expectedImg.RawData,
 	)
-	assert.Equal(t, expJodID, actualJob.ID)
-	assert.Equal(t, expJod.ImageID, actualJob.ImageID)
+	assert.NoError(t, err)
+	assert.Equal(t, expectedImg.Link, link)
 }

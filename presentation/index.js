@@ -4,7 +4,6 @@ import React from "react"
 // Import Spectacle Core tags
 import {
   BlockQuote,
-  Cite,
   Deck,
   Fill,
   Heading,
@@ -14,9 +13,9 @@ import {
   List,
   ListItem,
   Notes,
-  Quote,
   Slide,
   Text,
+  Appear,
 } from "spectacle"
 import CodeSlide from "spectacle-code-slide"
 
@@ -32,10 +31,11 @@ const images = {
 }
 preloader(images)
 const code = {
-  entities: require("raw-loader!../assets/code/entities.go"),
-  services: require("raw-loader!../assets/code/services.go"),
+  rootPackage: require("raw-loader!../assets/code/uploader.go"),
   storage: require("raw-loader!../assets/code/storage.go"),
   serviceImplementation: require("raw-loader!../assets/code/implementation.go"),
+
+
   tests: require("raw-loader!../assets/code/tests.go"),
   endpoints: require("raw-loader!../assets/code/endpoints.go"),
   transport: require("raw-loader!../assets/code/transport.go"),
@@ -44,9 +44,9 @@ const code = {
 preloader(code)
 
 const colors = {
-  primary: "#FAFAFA",
+  primary: "#FEFEFE",
   secondary: "#1F2022",
-  tertiary: "#FFBF00", // "#03A9FC",
+  tertiary: "#FFBF00",
   quarternary: "#CECECE",
 }
 
@@ -86,7 +86,7 @@ export default class Presentation extends React.Component {
             </ol>
           </Notes>
           <BlockQuote>
-            <Heading textColor="primary" size={3}>
+            <Heading textColor="primary" size={3} textAlign="left">
               To make system <Heading textColor="tertiary" size={3}>work*</Heading> under certain
               <Heading textColor="tertiary" size={3}>conditions*</Heading>
             </Heading>
@@ -200,17 +200,27 @@ export default class Presentation extends React.Component {
 
         <Slide transition={["fade"]} bgColor="secondary" textColor="primary">
           <Notes>
-            <p>To show the code I built an example service</p>
-            <p>Here is the list of use cases</p>
+            <p>To show the code I built an realy simple service for image uploading</p>
           </Notes>
           <Heading size={3} textColor="primary">
-            Image resizing
+            Image uploading
           </Heading>
           <List textAlign="left">
-            <ListItem textColor="primary" padding="0 0 20px 0">Upload an image for resize with given width and height</ListItem>
-            <ListItem textColor="primary" padding="0 0 20px 0">Get the original image</ListItem>
-            <ListItem textColor="primary" padding="0 0 20px 0">Get the resized image</ListItem>
+            <ListItem textColor="primary" padding="0 0 20px 0">Upload an image to the service</ListItem>
+            <ListItem textColor="primary" padding="0 0 20px 0">Get the link to uploaded image</ListItem>
+            <ListItem textColor="primary" padding="0 0 20px 0">Get an image by openning the link</ListItem>
           </List>
+          <Appear>
+            <List textAlign="left">
+              <ListItem textColor="tertiary" padding="0 0 20px 0">
+                Do not upload the same image twice
+              </ListItem>
+              <ListItem textColor="tertiary" padding="0 0 20px 0">
+                Make links easy to copy (short urls)
+              </ListItem>
+            </List>
+          </Appear>
+
         </Slide>
 
         <CodeSlide
@@ -218,37 +228,22 @@ export default class Presentation extends React.Component {
           color={colors.primary}
           transition={["fade"]}
           lang="go"
-          code={code.entities}
+          code={code.rootPackage}
+          notes={`
+            Hasher and URLShortener define contracts between the components of the system
+          `}
           ranges={[
-            { loc: [2, 6], note: "Image representation" },
-            { loc: [7, 13], note: "Resize Job" },
-            { loc: [14, 19], note: "Result of resize" },
-          ]}
-        />
+            { loc: [14, 19], note: "Describe Image entity" },
+            { loc: [15, 16], note: "ID will store hash of an image to check uniqueness" },
+            { loc: [16, 17], note: "Store an image's content as a byte slice" },
 
-        <CodeSlide
-          bgColor="secondary"
-          color={colors.primary}
-          transition={["fade"]}
-          lang="go"
-          code={code.services}
-          notes={
-            `Framework agnostic business logic
-            Not the db schema not the framework.
-            Not even main package
-            `
-          }
-          ranges={[
-            { loc: [6, 7], note: "Encapsulates uploading and getting use-cases" },
-            { loc: [7, 12], note: "Recieves bytes and sizes. Returns ResizeJob entity and error" },
-            { loc: [13, 17], note: "Recieves ID and returns Image entity" },
+            { loc: [21, 22], note: "UploadService describes use cases" },
+            { loc: [22, 25], note: "Upload an image and return link" },
+            { loc: [25, 28], note: "Get image. Returns Image entity" },
 
-            { loc: [24, 25], note: "Encapsulates resize related logic" },
-            { loc: [25, 29], note: "Responsible for image format encoding, resize algorith and so on" },
+            { loc: [31, 34], note: "Encapsulates Image's ID generation" },
+            { loc: [36, 39], note: "Encapsulates short URL generation logic" },
 
-            { loc: [32, 35], note: "Supplimentary interface for Image ID generation" },
-
-            { loc: [4, 5], note: "Generate mocks for all defined interfaces" },
           ]}
         />
 
@@ -259,19 +254,16 @@ export default class Presentation extends React.Component {
           lang="go"
           code={code.storage}
           notes={
-            `At this point, I need a storage.
-            I'll show the dependency isolation principle of Clean Architecture
-            I defined a storage with meaningfull methods for my business logic.
-            With no idea of implementation details
+            `To start design my service I definitely the storage.
+            I will prepare the interface for storage
 
-            DDD Anti corruption layer
+            DDD Anti corruption layer. I built abstraction layer over storage
           `}
           ranges={[
             { loc: [10, 11], note: "Define a storage interface" },
-            { loc: [11, 15], note: "Saves Image entity to a storage" },
-            { loc: [21, 25], note: "Saves resize job parameters" },
-
-            { loc: [2, 3], note: "Generates mocks for storage interface" },
+            { loc: [11, 14], note: "Saves Image entity to the storage" },
+            { loc: [14, 17], note: "Get image from the storage" },
+            { loc: [10, 18], note: "Defines anti-corruption layer for application logic" },
           ]}
         />
 
@@ -281,24 +273,32 @@ export default class Presentation extends React.Component {
           transition={["fade"]}
           lang="go"
           code={code.serviceImplementation}
-          notes={
-            `I have all the interfaces and isolated dependencies.
+          notes={`
+            I have all the interfaces and isolated dependencies.
             At this point, I can start implementation of Use-Cases
+
             Dependency injection example.
 
-            I model the domain with struct and interfaces of programmign language
-            `
-          }
+            I haven't written executable code.
+            But, I already can model use cases
+          `}
           ranges={[
-            { loc: [2, 7], note: "Define a struct with all the dependencies" },
-            { loc: [8, 15], note: "Define constructor function for convenience" },
+            { loc: [11, 16], note: "Define a struct with all the dependencies" },
+            { loc: [12, 13], note: "Storage for Image saving" },
+            { loc: [13, 14], note: "URL shortener" },
+            { loc: [14, 15], note: "Hasher for Image ID generation" },
 
-            { loc: [16, 17], note: "Implementing upload use-case" },
-            { loc: [21, 25], note: "Create the Image entity instance" },
-            { loc: [25, 29], note: "Save it to storage" },
-            { loc: [29, 34], note: "Create the ResizeJob" },
-            { loc: [34, 41], note: "Save to a storage. Get an ID from it" },
-            { loc: [42, 44], note: "Run resize process and return the job entity" },
+            { loc: [17, 20], note: "Implement GetImage use case" },
+            { loc: [20, 21], note: "Just get an image from the storage" },
+
+            { loc: [23, 26], note: "Implement Upload image use case" },
+            { loc: [26, 27], note: "Generate Image ID" },
+            { loc: [28, 33], note: "Initialize the Image entity" },
+
+            { loc: [33, 34], note: "Try to save an Image to the storage" },
+
+            { loc: [35, 41], note: "Handle behavior depend on storage error" },
+
           ]}
         />
 
@@ -311,26 +311,29 @@ export default class Presentation extends React.Component {
           notes={`
             I can write a test for that.
 
-            Test as design experiment.
             It tests that my design works as expected.
-            It's a huge benefit as compare with diagrams and whitebord drawings
+            I can model any behavior I want with test.
 
-            Design process has meaningful and measurable output
+            Critical difference with supplimentary documentation approach
+            I can play around with my design decision and evaluate based on real use case
           `}
           ranges={[
-            { loc: [5, 10], note: "Initialize the mocks for dependencies" },
-            { loc: [11, 16], note: "Initialize with mocked dependencies" },
-            { loc: [17, 29], note: "Set up expected values" },
-            { loc: [31, 43], note: "Set up mocks expectations" },
-            { loc: [33, 36], note: "Storage call for new image" },
-            { loc: [36, 39], note: "Storage call for resize job" },
-            { loc: [39, 42], note: "ResizeService for job processing" },
+            { loc: [14, 16], note: "Initialize a mocks controller" },
+            { loc: [16, 19], note: "Initialize dependencies mocks" },
+            { loc: [21, 26], note: "Build UploadService with mocks" },
+            { loc: [26, 31], note: "Prepare expected Image entetity" },
 
-            { loc: [43, 46], note: "Run the use case" },
-            { loc: [46, 48], note: "Assert the result" },
+            { loc: [32, 33], note: "Set up mocked dependencies expectation" },
+            { loc: [33, 36], note: "Set up ID Hasher will return" },
+            { loc: [36, 39], note: "Set up Shortener expected output" },
+            { loc: [39, 42], note: "Set expecatation for Storage call. Return an error" },
 
+            { loc: [44, 47], note: "Call the use case" },
+            { loc: [47, 49], note: "Assert results" },
           ]}
         />
+
+        {/* TODO: stopped here */}
 
         <Slide transition={["fade"]} bgColor="secondary" textColor="primary">
           <Notes>
@@ -440,13 +443,13 @@ export default class Presentation extends React.Component {
 
           <List textColor="primary" ordered textAlign="left">
             <ListItem padding="0 0 20px 0">
-              Design with a code not supplimentary documentation
+              Design with a code, not supplimentary documentation
             </ListItem>
             <ListItem padding="0 0 20px 0">
-              Design and implementation are separated processes
+              Reveals design solutions
             </ListItem>
             <ListItem padding="0 0 20px 0">
-              Testability, Maintainability, Extensibility
+              Focus on the Long-Term
             </ListItem>
           </List>
         </Slide>
@@ -464,7 +467,7 @@ export default class Presentation extends React.Component {
               Not traditional way to build software
             </ListItem>
             <ListItem padding="0 0 20px 0">
-              Extra-effort to keep a team in sync
+              Ivory tower architect pitfall
             </ListItem>
             <ListItem padding="0 0 20px 0">
               Boilerplate code
@@ -477,10 +480,12 @@ export default class Presentation extends React.Component {
             Questions?
           </Heading>
           <Text textColor="tertiary">
-            m.schepelin@gmail.com
+            schepelin@gett.com
           </Text>
+          <Link textColor="tertiary" href="https://github.com/schepelin">
+            @schepelin
+          </Link>
         </Slide>
-
 
         <Slide transition={["fade"]} bgColor="secondary" textColor="primary">
           <Heading size={3} textColor="primary">

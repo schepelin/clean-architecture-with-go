@@ -1,31 +1,18 @@
 package storage
 
-//go:generate mockgen -source=storage.go -destination ../mocks/mock_storage.go -package mocks
-
 import (
 	"context"
 
-	imgresizer "../imgresizer"
+	"github.com/schepelin/imgupload/pkg/uploader"
 )
 
-type ImgStorage interface {
+//go:generate mockgen -source=storage.go -destination ../mocks/mock_storage.go -package mocks
+
+type ImagesStorage interface {
 	SaveImage(
-		ctx context.Context,
-		img imgresizer.Image
+		ctx context.Context, img uploader.Image,
 	) error
-
 	GetImage(
-		ctx context.Context,
-		imgID string
-	) (*imgresizer.Image, error)
-
-	SaveResizeJob(
-		ctx context.Context,
-		job imgresizer.ResizeJob
-	) (jobID int, err error)
-
-	GetResizedImage(
-		ctx context.Context,
-		jobID int
-	) (*imgresizer.ResizedImage, error)
+		ctx context.Context, imgID string,
+	) (img *uploader.Image, err error)
 }
