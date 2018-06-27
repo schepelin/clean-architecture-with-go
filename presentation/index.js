@@ -34,8 +34,6 @@ const code = {
   rootPackage: require("raw-loader!../assets/code/uploader.go"),
   storage: require("raw-loader!../assets/code/storage.go"),
   serviceImplementation: require("raw-loader!../assets/code/implementation.go"),
-
-
   tests: require("raw-loader!../assets/code/tests.go"),
   endpoints: require("raw-loader!../assets/code/endpoints.go"),
   transport: require("raw-loader!../assets/code/transport.go"),
@@ -150,6 +148,9 @@ export default class Presentation extends React.Component {
             <ol>
               <li>They are critical for any long-term project</li>
               <li>They impact development process itself. Your DoD, Quality gates, Acceptance criteria</li>
+              <li>Suppose you have been writing hairball style code for years</li>
+              <li>And, One glorious day, just start care about maintainability. Thats imposible</li>
+              <li>It's like tooth hygiene</li>
             </ol>
           </Notes>
           <Layout>
@@ -333,8 +334,6 @@ export default class Presentation extends React.Component {
           ]}
         />
 
-        {/* TODO: stopped here */}
-
         <Slide transition={["fade"]} bgColor="secondary" textColor="primary">
           <Notes>
             <p>At this point, I implemented all the use-cases</p>
@@ -363,20 +362,23 @@ export default class Presentation extends React.Component {
           lang="go"
           code={code.endpoints}
           notes={`
-            Enpoint it's a function.
-            Responsible for converting request data
-            into service method arguments
-            and service output to the response
+            I've already shown the service layer.
+            Now, I gonna show endpoint and transport layers
+            ----
+            Endpoint transforms request from transport to service layer calls.
+
           `}
           ranges={[
-            { loc: [6, 7], title: "Endpoint layer" },
-            { loc: [9, 14], note: "Request format" },
-            { loc: [15, 19], note: "Response format" },
-            { loc: [23, 27], note: "Endpoint it's a function" },
+            { loc: [12, 15], note: "Endpoint is aware of what goes over transport layer" },
+            { loc: [13, 14], note: "Request object might be aware of serialization details" },
+            { loc: [16, 20], note: "Response describes what will be sent back at the transport level" },
+            { loc: [21, 23], note: "Create an endpoint for UploadService" },
+            { loc: [23, 27], note: "Endpoint it's a function receives request and returns response" },
 
-            { loc: [27, 29], note: "Transform external request into service object arguments" },
-            { loc: [32, 37], note: "Calls service's method" },
-            { loc: [37, 41], note: "Returns response" },
+            { loc: [28, 31], note: "Convert base64 encoded image into bytes" },
+            { loc: [34, 39], note: "Validate it" },
+            { loc: [39, 40], note: "Make a call to the service layer" },
+            { loc: [40, 44], note: "Produce the response" },
           ]}
         />
 
@@ -387,19 +389,41 @@ export default class Presentation extends React.Component {
           lang="go"
           code={code.transport}
           notes={`
-            At transport layer I'll use http.
+            I'll use http as the transport layer
             Transport wraps endpoint with particular protocol implementation
-
-            Transport can be gRPC, nats, kafka,
+            ----
+            Transport can be gRPC, nats, kafka, whatever.
+            ----
+            The rule of thumb is the transport must not affect your business logic layer.
           `}
           ranges={[
-            { loc: [8, 9], title: "Transport layer" },
-            { loc: [24, 33], note: "Build HTTP handler around endpoint" },
-            { loc: [27, 28], note: "Go-Kit does the dirty job" },
-            { loc: [28, 29], note: "Receives endpoint" },
-            { loc: [29, 30], note: "Request decoding can be customized" },
-            { loc: [15, 22], note: "Custom error for json decoding" },
-            { loc: [30, 31], note: "Go-kit provides encoders/decoders for popular formats" },
+            { loc: [16, 19], note: "Create an HTTP handler for the service object" },
+            { loc: [17, 18], note: "Receives service object" },
+            { loc: [18, 19], note: "Returns an HTTP handler" },
+            { loc: [19, 24], note: "Go-kit does the dirty job" },
+
+            { loc: [20, 21], note: "Just pass the endpoint" },
+            { loc: [21, 22], note: "The request decoder" },
+            { loc: [22, 23], note: "And, the response encoder" },
+
+            { loc: [26, 30], note: "GetImage request decoder" },
+
+            { loc: [30, 32], note: "Gets Image id from path" },
+            { loc: [35, 38], note: "Creates request object which will be passed to the endpoint" },
+
+            { loc: [40, 45], note: "GetImage response encoder. Gets the output from an endpoint" },
+
+            { loc: [46, 56], note: "Transforms endpoint's output to transport HTTP headers and body" },
+
+            { loc: [54, 55], note: "Respond with bad status code if something went wrong" },
+
+            { loc: [79, 88], note: "Respond with bad status code if something went wrong" },
+
+            { loc: [89, 92], note: "Collect all the handlers in one router" },
+            { loc: [92, 93], note: "Initialize the router" },
+            { loc: [93, 97], note: "Bind the Upload handler" },
+            { loc: [97, 101], note: "Bind the GetImage handler" },
+
           ]}
         />
 
@@ -410,32 +434,40 @@ export default class Presentation extends React.Component {
           lang="go"
           code={code.main}
           notes={`
-            And the last thing I do it's building the main package
+            And the last thing I do it's building the executable binary
+            ----
+            Composing dependencies with each other
+            And keep config, logging all infrastructure related topics away from application logic
+            ----
+            The code of this app was written in order I've shown
+            ---
+            Of course, I did some steps back when had discovered inconsistency in my design.
+            I'll share the link to the repo with demo app
           `}
           ranges={[
-            { loc: [0, 1], title: "Build the binary" },
-            { loc: [8, 11], note: "Import implementations of dependencies and services" },
+            { loc: [0, 1], note: "It's time to build an executable binary" },
+            { loc: [16, 21], note: "Define noopShortener, just to satisfy an interface" },
+            { loc: [22, 30], note: "MD5 hash for Image ID generator" },
 
-            { loc: [13, 20], note: "Dependency: Image ID generator" },
+            { loc: [44, 48], note: "Initialize DB connection" },
+            { loc: [52, 53], note: "Initialize postgres storage implementation" },
+            { loc: [53, 58], note: "Initialize UploadService with dependencies" },
+            { loc: [54, 55], note: "The Storage" },
+            { loc: [55, 57], note: "Shortener and Hasher" },
 
-            { loc: [22, 27], note: "Connect tothe database" },
-            { loc: [27, 28], note: "Initialize postgress storage dependency" },
-            { loc: [28, 29], note: "Initialize ResizeService dependency" },
-
-            { loc: [29, 34], note: "Initialize ImageService with all dependencies" },
-            { loc: [35, 36], note: "Create handler for upload use-case" },
-
-            { loc: [36, 38], note: "Create a router. Bind the handler" },
-
-            { loc: [38, 43], note: "Create and run http server" },
-
+            { loc: [59, 63], note: "Initialize the HTTP server" },
+            { loc: [61, 62], note: "Pass the router" },
+            { loc: [64, 71], note: "Run the HTTP server in a separeate goroutine" },
           ]}
         />
 
         <Slide transition={["fade"]} bgColor="secondary" textColor="primary">
           <Notes>
-            <p>Design knowledge lays down in the code not supplimentary documentation</p>
+            <p>The design knowledge lays down in the code not supplimentary documentation</p>
             <p>Show me your design (outdated photo of whiteboard)</p>
+            <p>Reveals design solutions</p>
+
+            <p>Code produced by this approach is modular, testable, covered by abstraction layers</p>
           </Notes>
           <Heading size={3} textColor="primary">
             Advantages
@@ -443,13 +475,13 @@ export default class Presentation extends React.Component {
 
           <List textColor="primary" ordered textAlign="left">
             <ListItem padding="0 0 20px 0">
-              Design with a code, not supplimentary documentation
+              Design lives in a code, not supplimentary documentation
             </ListItem>
             <ListItem padding="0 0 20px 0">
-              Reveals design solutions
+              An architecture is isomorphic to a business domain
             </ListItem>
             <ListItem padding="0 0 20px 0">
-              Focus on the Long-Term
+              Address long-term maintainability goals
             </ListItem>
           </List>
         </Slide>
@@ -457,7 +489,16 @@ export default class Presentation extends React.Component {
         <Slide transition={["fade"]} bgColor="secondary" textColor="primary">
           <Notes>
             <p>Not traditional way of writing software</p>
+            <p>I mean, all team have to understand the approach, know the domain, communicate with customers</p>
+            <p>It requires some level of discipline for the team to follow</p>
 
+            <p>Ivory tower</p>
+            <p>You isolate dependencies and technical stuff. But not make them disappear</p>
+            <p>It's still your responsibility to check feasibility of your design</p>
+
+            <p>Boilerplate</p>
+            <p>By buiding abstraction layers you have to write some code</p>
+            <p>If a reader of my code doesn't aware about the approach it looks useless</p>
           </Notes>
           <Heading size={3} textColor="primary">
             Drawbacks
@@ -492,22 +533,32 @@ export default class Presentation extends React.Component {
             Resources
           </Heading>
           <List>
-            <ListItem>
+            <ListItem padding="0 0 20px 0">
+              <Link textColor="tertiary" href="https://github.com/schepelin/imguploader">
+                Repo with demo app written in clean approach
+              </Link>
+            </ListItem>
+            <ListItem padding="0 0 20px 0">
+              <Link textColor="tertiary" href="http://gokit.io/">
+                Go-kit official site
+              </Link>
+            </ListItem>
+            <ListItem padding="0 0 20px 0">
               <Link textColor="tertiary" href="https://en.wikipedia.org/wiki/List_of_system_quality_attributes">
                 List of system quality attributes
               </Link>
             </ListItem>
-            <ListItem>
+            <ListItem padding="0 0 20px 0">
               <Link textColor="tertiary" href="https://8thlight.com/blog/uncle-bob/2012/08/13/the-clean-architecture.html">
                 Original article "Clean architecture"
               </Link>
             </ListItem>
-            <ListItem>
+            <ListItem padding="0 0 20px 0">
               <Link textColor="tertiary" href="http://a.co/68ZcJ15">
                 Book: Robert C. Martin – "Clean architecture"
               </Link>
             </ListItem>
-            <ListItem>
+            <ListItem padding="0 0 20px 0">
               <Link textColor="tertiary" href="http://a.co/jg6sKfJ">
                 Book: Eric Evans – "Domain Driven Design"
               </Link>

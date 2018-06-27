@@ -1,43 +1,46 @@
-package imgservice
+package uploadsvc
 
 import (
+	"bytes"
 	"context"
 	"encoding/base64"
+	"image"
 
 	"github.com/go-kit/kit/endpoint"
+	"github.com/schepelin/imgupload/pkg/uploader"
 )
 
 type UploadRequest struct {
-	Width  uint   `json:"width"`
-	Height uint   `json:"height"`
-	Raw    string `json:"image"`
+	Raw string `json:"image"`
 }
 
 type UploadResponse struct {
-	ID      int    `json:"job_id"`
-	ImageID string `json:"image_id"`
+	Link string `json:"link"`
+	Err  error  `json:"string,omitempty"`
 }
 
-func MakeUploadEndpoint(
-	svc imgresizer.ImageService,
-) endpoint.Endpoint {
+func MakeUploadEndpoint(svc uploader.UploadService)
+	endpoint.Endpoint {
 	return func(
 		ctx context.Context,
-		request interface{},
+		request interface{}
 	) (interface{}, error) {
 		req := request.(UploadRequest)
-		raw, err := base64.StdEncoding.DecodeString(req.Raw)
+		raw, err := base64.StdEncoding.DecodeString(
+			req.Raw,
+		)
 		if err != nil {
 			return nil, err
 		}
-		job, err := svc.UploadForResize(
-			ctx, raw,
-			req.Width,
-			req.Height,
-		)
+		b := bytes.NewBuffer(raw)
+		_, _, err = image.Decode(b)
+		if err != nil {
+			return nil, err
+		}
+		link, err := svc.UploadImage(ctx, raw)
 		return UploadResponse{
-			ID:      job.ID,
-			ImageID: job.ImageID
-		}, err
+			Link: link,
+			Err:  err,
+		}, nil
 	}
 }
