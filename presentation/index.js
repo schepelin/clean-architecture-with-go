@@ -84,9 +84,9 @@ export default class Presentation extends React.Component {
             </ol>
           </Notes>
           <BlockQuote>
-            <Heading textColor="primary" size={3} textAlign="left">
-              To make system <Heading textColor="tertiary" size={3}>work*</Heading> under certain
-              <Heading textColor="tertiary" size={3}>conditions*</Heading>
+            <Heading textColor="primary" size={3} textAlign="left" textSize="4.9rem">
+              To make system <Text textColor="tertiary" textSize="4.9rem" size={4}>work*</Text> under certain
+              <Text textColor="tertiary" size={4} textSize="4.9rem">conditions*</Text>
             </Heading>
           </BlockQuote>
         </Slide>
@@ -129,9 +129,15 @@ export default class Presentation extends React.Component {
           <Notes>
             <p>Derived from DDD</p>
             <p>Clean architecture approach establishes 4 principles</p>
-            <p>Why those four? Designing with focus on the long-term</p>
-            <p>These principles imply some quality attributes</p>
-            <p>Which one do you think?</p>
+            <p>That's the things your customer will never ask you.</p>
+            <p>
+              Our responsibility as developees is to define the conditions
+              <br/>
+              which will allow customers to reach their goals with our software
+            </p>
+
+            <p>BTW, these principles imply some of the quality attributes</p>
+            <p>Which ones do you think?</p>
           </Notes>
           <Heading size={3} textColor="primary">Clean architecture</Heading>
           <List textColor="primary">
@@ -144,14 +150,17 @@ export default class Presentation extends React.Component {
 
         <Slide transition={["fade"]} bgColor="secondary" textColor="primary">
           <Notes>
-            <h4>Why those three?</h4>
-            <ol>
-              <li>They are critical for any long-term project</li>
-              <li>They impact development process itself. Your DoD, Quality gates, Acceptance criteria</li>
-              <li>Suppose you have been writing hairball style code for years</li>
-              <li>And, One glorious day, just start care about maintainability. Thats imposible</li>
-              <li>It's like tooth hygiene</li>
-            </ol>
+            <p>Why those three?</p>
+            <p>They are critical for any long-term project</p>
+            <p>The impact development process itself. Your DoD, Quality gates, Acceptance criteria</p>
+            <p>They affects not only what code you write, but also the way you write it</p>
+            <p>
+              You have to care about technical debt and lead time<br/>
+              And, restrain it against growing<br/>
+              Manage the complexity of your codebase<br/>
+            </p>
+            <p>So, what is the first thing we can do to build maintainable solution?</p>
+
           </Notes>
           <Layout>
             <Fill><Text textColor="tertiary" bold>Extensibility</Text></Fill>
@@ -174,19 +183,27 @@ export default class Presentation extends React.Component {
 
         <Slide transition={["fade"]} bgColor="secondary" textColor="primary">
           <Notes>
-            <p>As the first step of the architecture process we must grasp the domain knowledge</p>
+            <p>To alignt the solution with the business domain</p>
+            <p>Ideally do it as the first step of initial design process</p>
+
             <p>The model of business domain defines what componenst the system will consist of</p>
+            <p>Without such alignment development team and customers<br/>
+              will literaly speak different languages</p>
+
             <p>
               For example: flight tiket buying.
-              What is for flight company. "Passenger" maybe "seat" maybe "flight ticket"
+              You are my customer, and you define flight ticket as "seats" in the plane
+              And I as developer define it as passenger
             </p>
+            <p>Such things are called Entites</p>
             <p>Entities are concepts whose instances are uniquely identifiable</p>
             <p>Entites are not models!. It has no idea how it will be stored</p>
-            <p>Use-Case it's a business process reporesentation</p>
-            <p>Service it's a component responsible for a set of use cases</p>
+
+            <p>A Use-Case it's a reporesentation of a business process</p>
+            <p>A Service it's a component of the system responsible for a set of use cases</p>
           </Notes>
           <Heading size={3} textColor="primary">
-            Domain exploration
+            Align with the domain
             <Text textColor="tertiary">Entities, Use-Cases, and Services</Text>
           </Heading>
         </Slide>
@@ -195,13 +212,17 @@ export default class Presentation extends React.Component {
           <Notes>
             <p>The core of your system is Entites and Use-Cases</p>
             <p>Strict rule: dependencies goes only inwards. Not outward</p>
+            <p>Your entities know about nothing</p>
+            <p>Use cases know about entities, but the not aware of transport layer or dependencies</p>
           </Notes>
           <Image src={images.diagram} width={772} height={567}/>
         </Slide>
 
         <Slide transition={["fade"]} bgColor="secondary" textColor="primary">
           <Notes>
-            <p>To show the code I built an realy simple service for image uploading</p>
+            <p>To show the approach I built the simple app for image uploading</p>
+
+            <p>Next slides I'll show of my example app and explain the code</p>
           </Notes>
           <Heading size={3} textColor="primary">
             Image uploading
@@ -221,7 +242,6 @@ export default class Presentation extends React.Component {
               </ListItem>
             </List>
           </Appear>
-
         </Slide>
 
         <CodeSlide
