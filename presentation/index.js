@@ -248,7 +248,7 @@ export default class Presentation extends React.Component {
           bgColor="secondary"
           color={colors.primary}
           transition={["fade"]}
-          lang="go"
+          lang="clike"
           code={code.rootPackage}
           notes={`
             Hasher and URLShortener define contracts between the components of the system
@@ -272,7 +272,7 @@ export default class Presentation extends React.Component {
           bgColor="secondary"
           color={colors.primary}
           transition={["fade"]}
-          lang="go"
+          lang="clike"
           code={code.storage}
           notes={
             `To start design my service I definitely the storage.
@@ -292,7 +292,7 @@ export default class Presentation extends React.Component {
           bgColor="secondary"
           color={colors.primary}
           transition={["fade"]}
-          lang="go"
+          lang="clike"
           code={code.serviceImplementation}
           notes={`
             I have all the interfaces and isolated dependencies.
@@ -327,7 +327,7 @@ export default class Presentation extends React.Component {
           bgColor="secondary"
           color={colors.primary}
           transition={["fade"]}
-          lang="go"
+          lang="clike"
           code={code.tests}
           notes={`
             I can write a test for that.
@@ -379,7 +379,7 @@ export default class Presentation extends React.Component {
           bgColor="secondary"
           color={colors.primary}
           transition={["fade"]}
-          lang="go"
+          lang="clike"
           code={code.endpoints}
           notes={`
             I've already shown the service layer.
@@ -406,7 +406,7 @@ export default class Presentation extends React.Component {
           bgColor="secondary"
           color={colors.primary}
           transition={["fade"]}
-          lang="go"
+          lang="clike"
           code={code.transport}
           notes={`
             I'll use http as the transport layer
@@ -451,7 +451,7 @@ export default class Presentation extends React.Component {
           bgColor="secondary"
           color={colors.primary}
           transition={["fade"]}
-          lang="go"
+          lang="clike"
           code={code.main}
           notes={`
             And the last thing I do it's building the executable binary
