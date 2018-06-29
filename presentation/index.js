@@ -284,7 +284,7 @@ export default class Presentation extends React.Component {
             { loc: [10, 11], note: "Define a storage interface" },
             { loc: [11, 14], note: "Saves Image entity to the storage" },
             { loc: [14, 17], note: "Get image from the storage" },
-            { loc: [10, 18], note: "Defines anti-corruption layer for application logic" },
+            { loc: [10, 18], note: "Serves as an anti-corruption layer for application logic" },
           ]}
         />
 
@@ -347,7 +347,7 @@ export default class Presentation extends React.Component {
             { loc: [32, 33], note: "Set up mocked dependencies expectation" },
             { loc: [33, 36], note: "Set up ID Hasher will return" },
             { loc: [36, 39], note: "Set up Shortener expected output" },
-            { loc: [39, 42], note: "Set expecatation for Storage call. Return an error" },
+            { loc: [39, 42], note: "Set expectation for Storage call. Return an error" },
 
             { loc: [44, 47], note: "Call the use case" },
             { loc: [47, 49], note: "Assert results" },
