@@ -64,6 +64,11 @@ export default class Presentation extends React.Component {
         contentWidth={1200}
       >
         <Slide transition={["fade"]} bgColor="primary">
+          <Notes>
+            <p>During the talk I'll consider an architecture process itself</p>
+            <p>Then, I'll explain a clean architecture approach</p>
+            <p>And last, I'll show code code of demo app</p>
+          </Notes>
           <Heading size={1} fit caps lineHeight={1} textColor="secondary">
             Clean Architecture With Go
           </Heading>
@@ -73,15 +78,19 @@ export default class Presentation extends React.Component {
         </Slide>
 
         <Slide transition={["fade"]} bgColor="secondary" textColor="primary">
+          <Notes>
+            <p>Developers like to argue about an architecture stuff</p>
+            <p>Buw why architecture is important?</p>
+            <p>Wy is it worth to invest our effort to an architecture staff?</p>
+          </Notes>
           <Heading size={3} textColor="primary">Why architecture is important?</Heading>
         </Slide>
 
         <Slide transition={["fade"]} bgColor="secondary" textColor="primary">
           <Notes>
-            <ol>
-              <li>Work – system executes functional requirements</li>
-              <li>Conditions – the quality attributes of a system</li>
-            </ol>
+            <p>From my point of view, the answer is</p>
+            <p>Work – system executes functional requirements</p>
+            <p>Conditions – the quality attributes of a system</p>
           </Notes>
           <BlockQuote>
             <Heading textColor="primary" size={3} textAlign="left" textSize="4.9rem">
@@ -93,14 +102,16 @@ export default class Presentation extends React.Component {
 
         <Slide transition={["fade"]} bgColor="secondary" textColor="primary">
           <Notes>
-            <p>Chosen quality attributes impact the final design of the system</p>
-            <p>Same functional requrements. One focus on security other focus on usability</p>
-            <p>Ultimately both systems will be absolutely different</p>
             <h4>Outputs of archutecture process</h4>
             <ol>
               <li>Consistent functional requirements (What system does)</li>
               <li>List of the quality attrbutes supported by the system (How the system does what it does)</li>
             </ol>
+            <p>Chosen quality attributes impact the final design of the system</p>
+            <p>Suppose, you and I design two online banking apps with the same functional requrement</p>
+            <p>But, we focus on different quality attributes</p>
+            <p>Your is performance and usability</p>
+            <p>And my is security</p>
           </Notes>
           <Layout>
             <Fill><Text textColor="primary" bold>Extensibility</Text></Fill>
@@ -127,7 +138,7 @@ export default class Presentation extends React.Component {
 
         <Slide transition={["fade"]} bgColor="secondary" textColor="primary">
           <Notes>
-            <p>Derived from DDD</p>
+            <p>So, clean architecture</p>
             <p>Clean architecture approach establishes 4 principles</p>
             <p>That's the things your customer will never ask you.</p>
             <p>
@@ -183,8 +194,8 @@ export default class Presentation extends React.Component {
 
         <Slide transition={["fade"]} bgColor="secondary" textColor="primary">
           <Notes>
-            <p>To alignt the solution with the business domain</p>
-            <p>Ideally do it as the first step of initial design process</p>
+            <p>The Clean approach related to DDD, but use less building blocks</p>
+            <p>To align the solution with the business domain</p>
 
             <p>The model of business domain defines what componenst the system will consist of</p>
             <p>Without such alignment development team and customers<br/>
@@ -213,7 +224,9 @@ export default class Presentation extends React.Component {
             <p>The core of your system is Entites and Use-Cases</p>
             <p>Strict rule: dependencies goes only inwards. Not outward</p>
             <p>Your entities know about nothing</p>
-            <p>Use cases know about entities, but the not aware of transport layer or dependencies</p>
+            <p>Use cases know about entities</p>
+            <p>But, all the business logic is not aware of transport layer or UI od Databse</p>
+            <p>Which means it has no dependencies</p>
           </Notes>
           <Image src={images.diagram} width={772} height={567}/>
         </Slide>
@@ -254,6 +267,8 @@ export default class Presentation extends React.Component {
             Hasher and URLShortener define contracts between the components of the system
           `}
           ranges={[
+            { loc: [0, 1], note: "Package which describes Entities and Use Cases" },
+            { loc: [1, 6], note: "No application level dependencies" },
             { loc: [14, 19], note: "Describe Image entity" },
             { loc: [15, 16], note: "ID will store hash of an image to check uniqueness" },
             { loc: [16, 17], note: "Store an image's content as a byte slice" },
