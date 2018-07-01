@@ -28,12 +28,12 @@ type UploadService interface {
 	) (*Image, error)
 }
 
-// Hasher generate unique ID for image based on its content
+// Hasher generates a unique ID for an image based on its content
 type Hasher interface {
 	Generate([]byte) string
 }
 
-// URLShortener produce short url for image ID
+// URLShortener produces short url for image ID
 type URLShortener interface {
 	MakeShortURL(imgID string) string
 }

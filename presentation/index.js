@@ -79,8 +79,8 @@ export default class Presentation extends React.Component {
 
         <Slide transition={["fade"]} bgColor="secondary" textColor="primary">
           <Notes>
-            <p>Developers like to argue about an architecture stuff</p>
-            <p>Buw why architecture is important?</p>
+            <p>Developers like to argue about architecture stuff</p>
+            <p>But why architecture is important?</p>
             <p>Wy is it worth to invest our effort to an architecture staff?</p>
           </Notes>
           <Heading size={3} textColor="primary">Why architecture is important?</Heading>
@@ -90,7 +90,8 @@ export default class Presentation extends React.Component {
           <Notes>
             <p>From my point of view, the answer is</p>
             <p>Work – system executes functional requirements</p>
-            <p>Conditions – the quality attributes of a system</p>
+            <p>And, the Conditions – amount of users, a budget, a reponse time and so on</p>
+            <p>Conditions are described by the quality attributes</p>
           </Notes>
           <BlockQuote>
             <Heading textColor="primary" size={3} textAlign="left" textSize="4.9rem">
@@ -102,16 +103,22 @@ export default class Presentation extends React.Component {
 
         <Slide transition={["fade"]} bgColor="secondary" textColor="primary">
           <Notes>
-            <h4>Outputs of archutecture process</h4>
-            <ol>
-              <li>Consistent functional requirements (What system does)</li>
-              <li>List of the quality attrbutes supported by the system (How the system does what it does)</li>
-            </ol>
-            <p>Chosen quality attributes impact the final design of the system</p>
+            <p>Here is a list of some quality attributes</p>
+            <p>The full list is much longer</p>
+
+            <p>The chosen quality attributes impact the final design of the system</p>
+
             <p>Suppose, you and I design two online banking apps with the same functional requrement</p>
             <p>But, we focus on different quality attributes</p>
             <p>Your is performance and usability</p>
             <p>And my is security</p>
+
+            <h4>The outputs of archutecture process</h4>
+            <ol>
+              <li>Consistent functional requirements (What system does)</li>
+              <li>List of the quality attrbutes supported by the system (How the system does what it does)</li>
+            </ol>
+            <p>Now, lest's go to the clean architecture aprroach</p>
           </Notes>
           <Layout>
             <Fill><Text textColor="primary" bold>Extensibility</Text></Fill>
@@ -139,13 +146,9 @@ export default class Presentation extends React.Component {
         <Slide transition={["fade"]} bgColor="secondary" textColor="primary">
           <Notes>
             <p>So, clean architecture</p>
-            <p>Clean architecture approach establishes 4 principles</p>
-            <p>That's the things your customer will never ask you.</p>
-            <p>
-              Our responsibility as developees is to define the conditions
-              <br/>
-              which will allow customers to reach their goals with our software
-            </p>
+            <p>It's the guidline for design process</p>
+            <p>Which establishes 4 principles</p>
+            <p>That's the things your customer will never ask you</p>
 
             <p>BTW, these principles imply some of the quality attributes</p>
             <p>Which ones do you think?</p>
@@ -155,7 +158,7 @@ export default class Presentation extends React.Component {
             <ListItem>Framework agnostic business logic</ListItem>
             <ListItem>Dependency isolation</ListItem>
             <ListItem>Easy to test</ListItem>
-            <ListItem>Independent of UI</ListItem>
+            <ListItem>Independent of UI and transport</ListItem>
           </List>
         </Slide>
 
@@ -164,13 +167,13 @@ export default class Presentation extends React.Component {
             <p>Why those three?</p>
             <p>They are critical for any long-term project</p>
             <p>The impact development process itself. Your DoD, Quality gates, Acceptance criteria</p>
-            <p>They affects not only what code you write, but also the way you write it</p>
+            <p>They affects not only what the code you will write, but also the way you write will it</p>
             <p>
               You have to care about technical debt and lead time<br/>
               And, restrain it against growing<br/>
               Manage the complexity of your codebase<br/>
             </p>
-            <p>So, what is the first thing we can do to build maintainable solution?</p>
+            <p>So, what is the first thing we shpuld start with?</p>
 
           </Notes>
           <Layout>
@@ -194,18 +197,16 @@ export default class Presentation extends React.Component {
 
         <Slide transition={["fade"]} bgColor="secondary" textColor="primary">
           <Notes>
-            <p>The Clean approach related to DDD, but use less building blocks</p>
-            <p>To align the solution with the business domain</p>
+            <p>Framework agnostic business logic</p>
+            <p>You have to align the solution with the business domain</p>
 
             <p>The model of business domain defines what componenst the system will consist of</p>
-            <p>Without such alignment development team and customers<br/>
-              will literaly speak different languages</p>
-
             <p>
               For example: flight tiket buying.
               You are my customer, and you define flight ticket as "seats" in the plane
               And I as developer define it as passenger
-            </p>
+            </p><br/>
+
             <p>Such things are called Entites</p>
             <p>Entities are concepts whose instances are uniquely identifiable</p>
             <p>Entites are not models!. It has no idea how it will be stored</p>
@@ -241,7 +242,7 @@ export default class Presentation extends React.Component {
             Image uploading
           </Heading>
           <List textAlign="left">
-            <ListItem textColor="primary" padding="0 0 20px 0">Upload an image to the service</ListItem>
+            <ListItem textColor="primary" padding="0 0 20px 0">Upload an image to the server</ListItem>
             <ListItem textColor="primary" padding="0 0 20px 0">Get the link to uploaded image</ListItem>
             <ListItem textColor="primary" padding="0 0 20px 0">Get an image by openning the link</ListItem>
           </List>
@@ -251,7 +252,7 @@ export default class Presentation extends React.Component {
                 Do not upload the same image twice
               </ListItem>
               <ListItem textColor="tertiary" padding="0 0 20px 0">
-                Make links easy to copy (short urls)
+                Make links easy to copy (use short urls)
               </ListItem>
             </List>
           </Appear>
@@ -275,7 +276,7 @@ export default class Presentation extends React.Component {
 
             { loc: [21, 22], note: "UploadService describes use cases" },
             { loc: [22, 25], note: "Upload an image and return link" },
-            { loc: [25, 28], note: "Get image. Returns Image entity" },
+            { loc: [25, 28], note: "Get an image. Returns Image entity" },
 
             { loc: [31, 34], note: "Encapsulates Image's ID generation" },
             { loc: [36, 39], note: "Encapsulates short URL generation logic" },
@@ -297,9 +298,9 @@ export default class Presentation extends React.Component {
           `}
           ranges={[
             { loc: [10, 11], note: "Define a storage interface" },
-            { loc: [11, 14], note: "Saves Image entity to the storage" },
-            { loc: [14, 17], note: "Get image from the storage" },
-            { loc: [10, 18], note: "Serves as an anti-corruption layer for application logic" },
+            { loc: [11, 14], note: "Saves an Image entity to the storage" },
+            { loc: [14, 17], note: "Get an image from the storage" },
+            { loc: [10, 18], note: "ImagesStorage makes the application not aware of DB specific stuff" },
           ]}
         />
 
@@ -324,10 +325,10 @@ export default class Presentation extends React.Component {
             { loc: [13, 14], note: "URL shortener" },
             { loc: [14, 15], note: "Hasher for Image ID generation" },
 
-            { loc: [17, 20], note: "Implement GetImage use case" },
+            { loc: [17, 20], note: "Implements GetImage use case" },
             { loc: [20, 21], note: "Just get an image from the storage" },
 
-            { loc: [23, 26], note: "Implement Upload image use case" },
+            { loc: [23, 26], note: "Implements Upload image use case" },
             { loc: [26, 27], note: "Generate Image ID" },
             { loc: [28, 33], note: "Initialize the Image entity" },
 
@@ -354,6 +355,7 @@ export default class Presentation extends React.Component {
             I can play around with my design decision and evaluate based on real use case
           `}
           ranges={[
+            { loc: [6, 7], note: "gomock generates mocks for defined interfaces" },
             { loc: [14, 16], note: "Initialize a mocks controller" },
             { loc: [16, 19], note: "Initialize dependencies mocks" },
             { loc: [21, 26], note: "Build UploadService with mocks" },
@@ -366,6 +368,7 @@ export default class Presentation extends React.Component {
 
             { loc: [44, 47], note: "Call the use case" },
             { loc: [47, 49], note: "Assert results" },
+            { loc: [13, 14], note: "Models the data flow through the application" },
           ]}
         />
 
