@@ -66,8 +66,8 @@ export default class Presentation extends React.Component {
         <Slide transition={["fade"]} bgColor="primary">
           <Notes>
             <p>During the talk I'll consider an architecture process itself</p>
-            <p>Then, I'll explain a clean architecture approach</p>
-            <p>And last, I'll show code code of demo app</p>
+            <p>Then, I'll explain what is a clean architecture approach</p>
+            <p>And last, I'll show the code of my demo app</p>
           </Notes>
           <Heading size={1} fit caps lineHeight={1} textColor="secondary">
             Clean Architecture With Go
@@ -95,7 +95,7 @@ export default class Presentation extends React.Component {
           </Notes>
           <BlockQuote>
             <Heading textColor="primary" size={3} textAlign="left" textSize="4.9rem">
-              To make system <Text textColor="tertiary" textSize="4.9rem" size={4}>work*</Text> under certain
+              To make a system <Text textColor="tertiary" textSize="4.9rem" size={4}>work*</Text> under certain
               <Text textColor="tertiary" size={4} textSize="4.9rem">conditions*</Text>
             </Heading>
           </BlockQuote>
@@ -116,7 +116,7 @@ export default class Presentation extends React.Component {
             <h4>The outputs of archutecture process</h4>
             <ol>
               <li>Consistent functional requirements (What system does)</li>
-              <li>List of the quality attrbutes supported by the system (How the system does what it does)</li>
+              <li>List of the quality attrbutes fo a system (How the system does what it does)</li>
             </ol>
             <p>Now, lest's go to the clean architecture aprroach</p>
           </Notes>
@@ -148,6 +148,8 @@ export default class Presentation extends React.Component {
             <p>So, clean architecture</p>
             <p>It's the guidline for design process</p>
             <p>Which establishes 4 principles</p>
+            <p>Read them</p>
+            <p>Why those four?</p>
             <p>That's the things your customer will never ask you</p>
 
             <p>BTW, these principles imply some of the quality attributes</p>
@@ -167,14 +169,14 @@ export default class Presentation extends React.Component {
             <p>Why those three?</p>
             <p>They are critical for any long-term project</p>
             <p>The impact development process itself. Your DoD, Quality gates, Acceptance criteria</p>
-            <p>They affects not only what the code you will write, but also the way you write will it</p>
+            <p>They affects not only what the final design of a solution</p>
+            <p>But also the way we build the solutin</p>
             <p>
               You have to care about technical debt and lead time<br/>
               And, restrain it against growing<br/>
               Manage the complexity of your codebase<br/>
             </p>
-            <p>So, what is the first thing we shpuld start with?</p>
-
+            <p>So, the first thing we should start with</p>
           </Notes>
           <Layout>
             <Fill><Text textColor="tertiary" bold>Extensibility</Text></Fill>
@@ -200,19 +202,19 @@ export default class Presentation extends React.Component {
             <p>Framework agnostic business logic</p>
             <p>You have to align the solution with the business domain</p>
 
-            <p>The model of business domain defines what componenst the system will consist of</p>
+            <p>The model of business domain defines what components the system will consist of</p>
             <p>
               For example: flight tiket buying.
               You are my customer, and you define flight ticket as "seats" in the plane
-              And I as developer define it as passenger
+              And I as developer define in my code base a passenger model
             </p><br/>
 
             <p>Such things are called Entites</p>
             <p>Entities are concepts whose instances are uniquely identifiable</p>
-            <p>Entites are not models!. It has no idea how it will be stored</p>
+            <p>Entites are not models! It has no idea how it will be stored</p>
 
             <p>A Use-Case it's a reporesentation of a business process</p>
-            <p>A Service it's a component of the system responsible for a set of use cases</p>
+            <p>A Service it's a component of the system responsible for a bunch of use cases</p>
           </Notes>
           <Heading size={3} textColor="primary">
             Align with the domain
@@ -243,7 +245,7 @@ export default class Presentation extends React.Component {
           </Heading>
           <List textAlign="left">
             <ListItem textColor="primary" padding="0 0 20px 0">Upload an image to the server</ListItem>
-            <ListItem textColor="primary" padding="0 0 20px 0">Get the link to uploaded image</ListItem>
+            <ListItem textColor="primary" padding="0 0 20px 0">Get the link to an uploaded image</ListItem>
             <ListItem textColor="primary" padding="0 0 20px 0">Get an image by openning the link</ListItem>
           </List>
           <Appear>
@@ -269,7 +271,7 @@ export default class Presentation extends React.Component {
           `}
           ranges={[
             { loc: [0, 1], note: "Package which describes Entities and Use Cases" },
-            { loc: [1, 6], note: "No application level dependencies" },
+            { loc: [2, 6], note: "No application level dependencies" },
             { loc: [14, 19], note: "Describe Image entity" },
             { loc: [15, 16], note: "ID will store hash of an image to check uniqueness" },
             { loc: [16, 17], note: "Store an image's content as a byte slice" },
@@ -294,7 +296,9 @@ export default class Presentation extends React.Component {
             `To start design my service I definitely the storage.
             I will prepare the interface for storage
 
-            DDD Anti corruption layer. I built abstraction layer over storage
+            And isolate my storage by interface
+
+            DDD it called Anti corruption layer. I built abstraction layer over storage
           `}
           ranges={[
             { loc: [10, 11], note: "Define a storage interface" },
@@ -312,12 +316,13 @@ export default class Presentation extends React.Component {
           code={code.serviceImplementation}
           notes={`
             I have all the interfaces and isolated dependencies.
-            At this point, I can start implementation of Use-Cases
+            At this point, I can start implementation of my Use-Cases
 
             Dependency injection example.
 
             I haven't written executable code.
             But, I already can model use cases
+            I've defined the data flow through the application
           `}
           ranges={[
             { loc: [11, 16], note: "Define a struct with all the dependencies" },
@@ -378,7 +383,7 @@ export default class Presentation extends React.Component {
             <p>For transport layer I gonna use go-kit.</p>
             <p>It's not MVC framework. But, also has layers</p>
             <p>Transport layer it's encapsulates protocol specific details</p>
-            <p>Endpoint layer it's an abstraction over Service. Represent entrypoint to a use case</p>
+            <p>Endpoint layer define contracts between Service and transport lyaers.</p>
             <p>Service layer. Where the business logic lives</p>
           </Notes>
           <Heading size={3} textColor="primary">
@@ -407,9 +412,10 @@ export default class Presentation extends React.Component {
 
           `}
           ranges={[
+            { loc: [8, 9], note: "Use go-kit's endpoint to declare contract between service an transport" },
             { loc: [12, 15], note: "Endpoint is aware of what goes over transport layer" },
             { loc: [13, 14], note: "Request object might be aware of serialization details" },
-            { loc: [16, 20], note: "Response describes what will be sent back at the transport level" },
+            { loc: [16, 20], note: "Response describes what will be sent back over a transport layer" },
             { loc: [21, 23], note: "Create an endpoint for UploadService" },
             { loc: [23, 27], note: "Endpoint it's a function receives request and returns response" },
 
@@ -417,6 +423,7 @@ export default class Presentation extends React.Component {
             { loc: [34, 39], note: "Validate it" },
             { loc: [39, 40], note: "Make a call to the service layer" },
             { loc: [40, 44], note: "Produce the response" },
+            { loc: [21, 27], note: "Endpoint abstracts a Service from details of getting request params" },
           ]}
         />
 
@@ -435,27 +442,27 @@ export default class Presentation extends React.Component {
             The rule of thumb is the transport must not affect your business logic layer.
           `}
           ranges={[
+            { loc: [11, 12], note: "Use go-kit's library for HTTP" },
             { loc: [16, 19], note: "Create an HTTP handler for the service object" },
             { loc: [17, 18], note: "Receives service object" },
             { loc: [18, 19], note: "Returns an HTTP handler" },
-            { loc: [19, 24], note: "Go-kit does the dirty job" },
+            { loc: [19, 24], note: "Go-kit does the dirty job to create an HTTP handler" },
 
             { loc: [20, 21], note: "Just pass the endpoint" },
             { loc: [21, 22], note: "The request decoder" },
             { loc: [22, 23], note: "And, the response encoder" },
 
-            { loc: [26, 30], note: "GetImage request decoder" },
+            { loc: [26, 30], note: "GetImage request decoder. Creates request object from the data passed over the protocol" },
 
             { loc: [30, 32], note: "Gets Image id from path" },
             { loc: [35, 38], note: "Creates request object which will be passed to the endpoint" },
 
-            { loc: [40, 45], note: "GetImage response encoder. Gets the output from an endpoint" },
+            { loc: [40, 45], note: "GetImage response encoder. Transforms endpoint's response to a protocol specific params" },
 
+            { loc: [45, 46], note: "Cast an endpoint's response to the particular type" },
             { loc: [46, 56], note: "Transforms endpoint's output to transport HTTP headers and body" },
 
             { loc: [54, 55], note: "Respond with bad status code if something went wrong" },
-
-            { loc: [79, 88], note: "Respond with bad status code if something went wrong" },
 
             { loc: [89, 92], note: "Collect all the handlers in one router" },
             { loc: [92, 93], note: "Initialize the router" },
@@ -513,7 +520,7 @@ export default class Presentation extends React.Component {
 
           <List textColor="primary" ordered textAlign="left">
             <ListItem padding="0 0 20px 0">
-              Design lives in a code, not supplimentary documentation
+              The design lives in a code, not supplimentary documentation
             </ListItem>
             <ListItem padding="0 0 20px 0">
               An architecture is isomorphic to a business domain
@@ -531,8 +538,11 @@ export default class Presentation extends React.Component {
             <p>It requires some level of discipline for the team to follow</p>
 
             <p>Ivory tower</p>
-            <p>You isolate dependencies and technical stuff. But not make them disappear</p>
-            <p>It's still your responsibility to check feasibility of your design</p>
+            <p>Yes, we could model the data flow of an application with interfaces</p>
+            <p>It's easy to say the rest is an implementatio ndetail</p>
+            <p>You isolate dependencies and technical stuff. But it does not make them disappear</p>
+            <p>Not, all the technical problems are magically solved</p>
+            <p>It's still your responsibility to check feasibility of your design with technologies you will use</p>
 
             <p>Boilerplate</p>
             <p>By buiding abstraction layers you have to write some code</p>
@@ -573,7 +583,7 @@ export default class Presentation extends React.Component {
           <List>
             <ListItem padding="0 0 20px 0">
               <Link textColor="tertiary" href="https://github.com/schepelin/imguploader">
-                Repo with demo app written in clean approach
+                The repo of the demo app written in clean approach
               </Link>
             </ListItem>
             <ListItem padding="0 0 20px 0">
