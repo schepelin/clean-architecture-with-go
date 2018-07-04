@@ -65,7 +65,7 @@ export default class Presentation extends React.Component {
       >
         <Slide transition={["fade"]} bgColor="primary">
           <Notes>
-            <p>During the talk I'll consider an architecture process itself</p>
+            <p>During the talk I'll touch an architecture process itself</p>
             <p>Then, I'll explain what is a clean architecture approach</p>
             <p>And last, I'll show the code of my demo app</p>
           </Notes>
@@ -90,8 +90,10 @@ export default class Presentation extends React.Component {
           <Notes>
             <p>From my point of view, the answer is</p>
             <p>Work – system executes functional requirements</p>
-            <p>And, the Conditions – amount of users, a budget, a reponse time and so on</p>
-            <p>Conditions are described by the quality attributes</p>
+            <p>And, the conditions are tricky and complicated thing</p>
+            <p>How many users we have, what is the budget limitations, a reponse time and so on</p>
+            <p>All that stuff affects the software we gonna build</p>
+            <p>These Conditions are described by the quality attributes</p>
           </Notes>
           <BlockQuote>
             <Heading textColor="primary" size={3} textAlign="left" textSize="4.9rem">
@@ -113,9 +115,9 @@ export default class Presentation extends React.Component {
             <p>Your is performance and usability</p>
             <p>And my is security</p>
 
-            <h4>The outputs of archutecture process</h4>
+            <h4>So as the results of archutecture process</h4>
             <ol>
-              <li>Consistent functional requirements (What system does)</li>
+              <li>Consistent set of functional requirements (What system does)</li>
               <li>List of the quality attrbutes fo a system (How the system does what it does)</li>
             </ol>
             <p>Now, lest's go to the clean architecture aprroach</p>
@@ -166,16 +168,17 @@ export default class Presentation extends React.Component {
 
         <Slide transition={["fade"]} bgColor="secondary" textColor="primary">
           <Notes>
-            <p>Why those three?</p>
+            <p>Why those four?</p>
             <p>They are critical for any long-term project</p>
-            <p>The impact development process itself. Your DoD, Quality gates, Acceptance criteria</p>
+            <p>They impact development process itself. Your DoD, Quality gates, Acceptance criteria</p>
             <p>They affects not only what the final design of a solution</p>
             <p>But also the way we build the solutin</p>
             <p>
-              You have to care about technical debt and lead time<br/>
+              You have to care about technical debt and features lead time<br/>
               And, restrain it against growing<br/>
               Manage the complexity of your codebase<br/>
             </p>
+            <p>That is the motivativation under the clean architecture approach</p>
             <p>So, the first thing we should start with</p>
           </Notes>
           <Layout>
@@ -186,7 +189,7 @@ export default class Presentation extends React.Component {
           <Text textColor="secondary">noop</Text>
           <Layout>
             <Fill><Text textColor="primary" bold>Scalability</Text></Fill>
-            <Fill><Text textColor="primary" bold>Modularity</Text></Fill>
+            <Fill><Text textColor="tertiary" bold>Modularity</Text></Fill>
             <Fill><Text textColor="tertiary" bold>Maintainability</Text></Fill>
           </Layout>
           <Text textColor="secondary">noop</Text>
@@ -203,17 +206,16 @@ export default class Presentation extends React.Component {
             <p>You have to align the solution with the business domain</p>
 
             <p>The model of business domain defines what components the system will consist of</p>
-            <p>
-              For example: flight tiket buying.
-              You are my customer, and you define flight ticket as "seats" in the plane
-              And I as developer define in my code base a passenger model
-            </p><br/>
-
+            <p>How to define such components?</p>
+            <p>First, we start with identifiable concepts of the domain. Driver, Order, customer, and so on</p>
+            <p>It might be difficult to identify.
+              For example: flight tiket buying. "Seat" vs "passanger"</p>
             <p>Such things are called Entites</p>
-            <p>Entities are concepts whose instances are uniquely identifiable</p>
-            <p>Entites are not models! It has no idea how it will be stored</p>
 
-            <p>A Use-Case it's a reporesentation of a business process</p>
+            <p>Entites are not models! It has no idea how it will be stored</p>
+            <p>A Use-Case it's a representation of a business process</p>
+            <p>luggage check in, security check, ordder fulfullment and so on</p>
+
             <p>A Service it's a component of the system responsible for a bunch of use cases</p>
           </Notes>
           <Heading size={3} textColor="primary">
@@ -237,8 +239,8 @@ export default class Presentation extends React.Component {
         <Slide transition={["fade"]} bgColor="secondary" textColor="primary">
           <Notes>
             <p>To show the approach I built the simple app for image uploading</p>
-
             <p>Next slides I'll show of my example app and explain the code</p>
+            <p>I did my best to show you the code</p>
           </Notes>
           <Heading size={3} textColor="primary">
             Image uploading
@@ -379,8 +381,11 @@ export default class Presentation extends React.Component {
 
         <Slide transition={["fade"]} bgColor="secondary" textColor="primary">
           <Notes>
-            <p>At this point, I implemented all the use-cases</p>
-            <p>For transport layer I gonna use go-kit.</p>
+            <p>At this point, I finished my design and verified it works</p>
+            <p>As the next step I could create the real impelementation of my components expose API</p>
+            <p>I'll go show you how to expose API for this approach</p>
+
+            <p>I gonna use go-kit for the that reason. And that's nice thing in GO</p>
             <p>It's not MVC framework. But, also has layers</p>
             <p>Transport layer it's encapsulates protocol specific details</p>
             <p>Endpoint layer define contracts between Service and transport lyaers.</p>
