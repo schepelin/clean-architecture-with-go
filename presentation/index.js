@@ -67,7 +67,7 @@ export default class Presentation extends React.Component {
           <Notes>
             <p>During the talk I'll touch an architecture process itself</p>
             <p>Then, I'll explain what is a clean architecture approach</p>
-            <p>And last, I'll show the code of my demo app</p>
+            <p>And in the third, I'll show the code of the demo app</p>
           </Notes>
           <Heading size={1} fit caps lineHeight={1} textColor="secondary">
             Clean Architecture With Go
@@ -90,8 +90,8 @@ export default class Presentation extends React.Component {
           <Notes>
             <p>From my point of view, the answer is</p>
             <p>Work – system executes functional requirements</p>
-            <p>And, the conditions are tricky and complicated thing</p>
-            <p>How many users we have, what is the budget limitations, a reponse time and so on</p>
+            <p>And, Defining the conditions is a complicated thing</p>
+            <p>How many users we have, what is the budget limitations, What a reponse time and so on</p>
             <p>All that stuff affects the software we gonna build</p>
             <p>These Conditions are described by the quality attributes</p>
           </Notes>
@@ -108,14 +108,14 @@ export default class Presentation extends React.Component {
             <p>Here is a list of some quality attributes</p>
             <p>The full list is much longer</p>
 
-            <p>The chosen quality attributes impact the final design of the system</p>
-
             <p>Suppose, you and I design two online banking apps with the same functional requrement</p>
             <p>But, we focus on different quality attributes</p>
-            <p>Your is performance and usability</p>
+            <p>Your's are performance and usability</p>
             <p>And my is security</p>
 
-            <h4>So as the results of archutecture process</h4>
+            <p>The chosen quality attributes impact the final design of the system</p>
+
+            <h4>To start a technical design process we need two things:</h4>
             <ol>
               <li>Consistent set of functional requirements (What system does)</li>
               <li>List of the quality attrbutes fo a system (How the system does what it does)</li>
@@ -152,10 +152,10 @@ export default class Presentation extends React.Component {
             <p>Which establishes 4 principles</p>
             <p>Read them</p>
             <p>Why those four?</p>
-            <p>That's the things your customer will never ask you</p>
+            <p>These are the things your customer will never ask you for</p>
 
             <p>BTW, these principles imply some of the quality attributes</p>
-            <p>Which ones do you think?</p>
+            <p>Any ideas which of?</p>
           </Notes>
           <Heading size={3} textColor="primary">Clean architecture</Heading>
           <List textColor="primary">
@@ -168,17 +168,18 @@ export default class Presentation extends React.Component {
 
         <Slide transition={["fade"]} bgColor="secondary" textColor="primary">
           <Notes>
-            <p>Why those four?</p>
-            <p>They are critical for any long-term project</p>
-            <p>They impact development process itself. Your DoD, Quality gates, Acceptance criteria</p>
+            <p>Why those four are special?</p>
+            <p>First, they are critical for any long-term project</p>
+            <p>Second, they impact development process itself. Your DoD, Quality gates, Acceptance criteria</p>
             <p>They affects not only what the final design of a solution</p>
-            <p>But also the way we build the solutin</p>
+            <p>But also the way we build the solution</p>
             <p>
-              You have to care about technical debt and features lead time<br/>
+              We have to care about technical debt and features lead time<br/>
               And, restrain it against growing<br/>
               Manage the complexity of your codebase<br/>
             </p>
             <p>That is the motivativation under the clean architecture approach</p>
+            <p>Let's look how to do it</p>
             <p>So, the first thing we should start with</p>
           </Notes>
           <Layout>
@@ -212,9 +213,10 @@ export default class Presentation extends React.Component {
               For example: flight tiket buying. "Seat" vs "passanger"</p>
             <p>Such things are called Entites</p>
 
-            <p>Entites are not models! It has no idea how it will be stored</p>
+            <p>Entites are not models! The describes the objects in the domain not the to store them</p>
+            <p>The next term is Use-Case</p>
             <p>A Use-Case it's a representation of a business process</p>
-            <p>luggage check in, security check, ordder fulfullment and so on</p>
+            <p>luggage check in, security check, order fulfillment and so on</p>
 
             <p>A Service it's a component of the system responsible for a bunch of use cases</p>
           </Notes>
